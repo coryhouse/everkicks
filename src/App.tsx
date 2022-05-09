@@ -1,3 +1,16 @@
+import { useState } from "react";
+
 export default function App() {
-  return <h1>Everkicks</h1>;
+  const [shoes, setShoes] = useState(["Nike Air Max", "Reebok Pump"]);
+
+  return (
+    <>
+      <h1>Everkicks</h1>
+      <ul>
+        {shoes.map((shoe) => (
+          <li>{shoe}</li>
+        ))}
+      </ul>
+    </>
+  );
 }
