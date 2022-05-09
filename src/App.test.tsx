@@ -9,9 +9,14 @@ it("renders heading", () => {
 
 it("supports adding a shoe", () => {
   render(<App />);
-  const input = screen.getByLabelText("Shoe name");
+  const input = screen.getByLabelText("Shoe name") as HTMLInputElement;
   const submitButton = screen.getByRole("button", { name: "Add Shoe" });
   fireEvent.change(input, { target: { value: "British Knights" } });
   fireEvent.click(submitButton);
+
+  // Now the input should be empty because we just submitted the form
+  expect(input.value).toEqual("");
+
+  // Exercise: Make this test pass.
   screen.getByText("British Knights");
 });
