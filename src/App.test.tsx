@@ -1,8 +1,17 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import App from "./App";
 
-test("renders heading", () => {
+it("renders heading", () => {
   render(<App />);
-  screen.getByText("Everkicks");
+  screen.getByRole("heading", { name: "Everkicks" });
+});
+
+it("supports adding a shoe", () => {
+  render(<App />);
+  const input = screen.getByLabelText("Shoe name");
+  const submitButton = screen.getByRole("button", { name: "Add Shoe" });
+  fireEvent.change(input, { target: { value: "British Knights" } });
+  fireEvent.click(submitButton);
+  screen.getByText("British Knights");
 });
