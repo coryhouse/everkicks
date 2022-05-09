@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import ManageShoes from "./ManageShoes";
 
-// Exercise 3: Implement nav bar with links to both pages.
 export default function App() {
   const [shoes, setShoes] = useState(["Nike Air Max", "Reebok Pump"]);
 
@@ -13,10 +12,10 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <a href="/">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="/admin/shoes">Manage Shoes</a>
+              <Link to="/admin/shoes">Manage Shoes</Link>
             </li>
           </ul>
         </nav>
