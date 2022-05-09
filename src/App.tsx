@@ -14,6 +14,7 @@ export default function App() {
         onSubmit={(event) => {
           event.preventDefault(); // Hey browser, don't post back
           setShoes([...shoes, shoe]);
+          setShoe("");
         }}
       >
         <label htmlFor="shoe-name">Shoe name</label>
@@ -24,7 +25,7 @@ export default function App() {
           value={shoe}
           onChange={(event) => setShoe(event.target.value)}
         />
-        <button>Add Shoe</button>
+        <button type="submit">Add Shoe</button>
       </form>
 
       <ul>

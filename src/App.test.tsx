@@ -9,7 +9,7 @@ it("renders heading", () => {
 
 it("supports adding a shoe", () => {
   render(<App />);
-  const input = screen.getByLabelText("Shoe name") as HTMLInputElement;
+  const input: HTMLInputElement = screen.getByLabelText("Shoe name");
   const submitButton = screen.getByRole("button", { name: "Add Shoe" });
   fireEvent.change(input, { target: { value: "British Knights" } });
   fireEvent.click(submitButton);
