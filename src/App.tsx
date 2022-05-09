@@ -1,38 +1,14 @@
-import { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import ManageShoes from "./ManageShoes";
 
 export default function App() {
-  // Declare stuff in state that changes over time.
-  // That way React knows to re-render when the state changes
-  const [shoes, setShoes] = useState(["Nike Air Max", "Reebok Pump"]);
-  const [shoe, setShoe] = useState("");
-
   return (
-    <>
-      <h1>Everkicks</h1>
-
-      <form
-        onSubmit={(event) => {
-          event.preventDefault(); // Hey browser, don't post back
-          setShoes([...shoes, shoe]);
-          setShoe("");
-        }}
-      >
-        <label htmlFor="shoe-name">Shoe name</label>
-        <br />
-        <input
-          type="text"
-          id="shoe-name"
-          value={shoe}
-          onChange={(event) => setShoe(event.target.value)}
-        />
-        <button type="submit">Add Shoe</button>
-      </form>
-
-      <ul>
-        {shoes.map((shoe) => (
-          <li>{shoe}</li>
-        ))}
-      </ul>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/admin/shoes" element={<ManageShoes />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
