@@ -6,13 +6,14 @@ export default function App() {
   const [shoes, setShoes] = useState(["Nike Air Max", "Reebok Pump"]);
   const [shoe, setShoe] = useState("");
 
-  // Exercise 1: Render "Add shoe" button above the list of shoes.
   return (
     <>
       <h1>Everkicks</h1>
+
       <form
-        onSubmit={() => {
-          //setShoes([...shoes, ????])
+        onSubmit={(event) => {
+          event.preventDefault(); // Hey browser, don't post back
+          setShoes([...shoes, shoe]);
         }}
       >
         <label htmlFor="shoe-name">Shoe name</label>
@@ -25,6 +26,7 @@ export default function App() {
         />
         <button>Add Shoe</button>
       </form>
+
       <ul>
         {shoes.map((shoe) => (
           <li>{shoe}</li>
