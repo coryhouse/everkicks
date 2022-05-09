@@ -1,5 +1,8 @@
-export default function Home() {
-  const shoes: Array<string> = [];
+type HomeProps = {
+  shoes: string[];
+};
+
+export default function Home({ shoes }: HomeProps) {
   return (
     <>
       <h1>Everkicks</h1>

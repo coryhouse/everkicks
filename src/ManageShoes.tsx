@@ -1,14 +1,18 @@
 import { useState } from "react";
 
-export default function ManageShoes() {
+interface ManageShoesProps {
+  shoes: string[];
+  setShoes: (shoes: string[]) => void;
+}
+
+export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
   // Declare stuff in state that changes over time.
   // That way React knows to re-render when the state changes
-  const [shoes, setShoes] = useState(["Nike Air Max", "Reebok Pump"]);
   const [shoe, setShoe] = useState("");
 
   return (
     <>
-      <h1>Everkicks</h1>
+      <h1>Everkicks: Manage Shoes</h1>
 
       <form
         onSubmit={(event) => {
