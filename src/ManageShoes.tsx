@@ -1,4 +1,6 @@
 import { useState } from "react";
+import SelectInput from "./reusable/SelectInput";
+import TextInput from "./reusable/TextInput";
 import { Shoe } from "./types/types";
 
 interface ManageShoesProps {
@@ -24,11 +26,30 @@ type Errors = {
   size: string;
 };
 
+// type Touched = {
+//   name: boolean;
+//   brand: boolean;
+//   price: boolean;
+//   releaseDate: boolean;
+//   size: boolean;
+// };
+
+const untouchedForm = {
+  name: false,
+  brand: false,
+  price: false,
+  releaseDate: false,
+  size: false,
+};
+
+type Status = "Idle" | "Submitting" | "Submitted";
+
 export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
   // Declare stuff in state that changes over time.
   // That way React knows to re-render when the state changes
   const [shoe, setShoe] = useState<Shoe>(newShoe);
-  const [errors, setErrors] = useState<Partial<Errors>>({});
+  const [touched, setTouched] = useState(untouchedForm);
+  const [status, setStatus] = useState<Status>("Idle");
 
   const { name, brand, price, releaseDate, size } = shoe;
 
@@ -41,18 +62,37 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
     setShoe({ ...shoe, [event.target.id]: event.target.value });
   }
 
-  function formIsValid() {
-    const currentErrors: Partial<Errors> = {};
-    if (!shoe.brand) currentErrors.brand = "Brand is required.";
-    if (!shoe.name) currentErrors.name = "Name is required.";
-    if (!shoe.price) currentErrors.price = "Price is required.";
-    if (!shoe.releaseDate)
-      currentErrors.releaseDate = "Release date is required.";
-    if (!shoe.size) currentErrors.size = "Size is required.";
-    setErrors(currentErrors);
-    // Return true if the errors object has no properties.
-    return Object.keys(currentErrors).length === 0;
+  function validate() {
+    const errors: Partial<Errors> = {};
+    if ((touched.brand || status === "Submitted") && !shoe.brand)
+      errors.brand = "Brand is required.";
+
+    if ((touched.name || status === "Submitted") && !shoe.name)
+      errors.name = "Name is required.";
+
+    if ((touched.price || status === "Submitted") && !shoe.price)
+      errors.price = "Price is required.";
+
+    if ((touched.releaseDate || status === "Submitted") && !shoe.releaseDate)
+      errors.releaseDate = "Release date is required.";
+
+    if ((touched.size || status === "Submitted") && !shoe.size)
+      errors.size = "Size is required.";
+
+    return errors;
   }
+
+  function onBlur(
+    event:
+      | React.FocusEvent<HTMLSelectElement>
+      | React.FocusEvent<HTMLInputElement>
+  ) {
+    setTouched({ ...touched, [event.target.id]: true });
+  }
+
+  // Derived state - Calculated on each render.
+  const errors = validate();
+  const isValid = Object.keys(errors).length === 0;
 
   return (
     <>
@@ -63,67 +103,70 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
         <form
           onSubmit={(event) => {
             event.preventDefault(); // Hey browser, don't post back
-            if (!formIsValid()) return;
+            setStatus("Submitting");
+            if (!isValid) {
+              setStatus("Submitted");
+              return;
+            }
             setShoes([...shoes, shoe]);
             setShoe(newShoe);
           }}
         >
-          <div>
-            <label htmlFor="brand">Brand</label>
-            <br />
-            <select id="brand" value={brand} onChange={onChange}>
-              <option value="">Select brand</option>
-              <option value="Nike">Nike</option>
-              <option value="Adidas">Adidas</option>
-              <option value="British Knights">British Knights</option>
-            </select>
-          </div>
-          {errors.brand && <div>{errors.brand}</div>}
+          <SelectInput
+            id="brand"
+            label="Brand"
+            value={brand}
+            onChange={onChange}
+            onBlur={onBlur}
+            options={[
+              { value: "", label: "Select Brand" },
+              { value: "Nike" },
+              { value: "Adidas" },
+              { value: "British Knights" },
+            ]}
+            error={errors.brand}
+          />
 
-          <div>
-            <label htmlFor="name">Shoe name</label>
-            <br />
-            <input type="text" id="name" value={name} onChange={onChange} />
-          </div>
-          {errors.name && <div>{errors.name}</div>}
+          <TextInput
+            id="name"
+            label="Shoe name"
+            value={name}
+            onChange={onChange}
+            onBlur={onBlur}
+            error={errors.name}
+          />
 
-          <div>
-            <label htmlFor="price">Price</label>
-            <br />
-            <input
-              type="number"
-              step=".01"
-              id="price"
-              value={price}
-              onChange={onChange}
-            />
-          </div>
-          {errors.price && <div>{errors.price}</div>}
+          <TextInput
+            id="price"
+            label="Price"
+            type="number"
+            step=".01"
+            error={errors.price}
+            value={price}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
 
-          <div>
-            <label htmlFor="releaseDate">Release date</label>
-            <br />
-            <input
-              type="date"
-              id="releaseDate"
-              value={releaseDate}
-              onChange={onChange}
-            />
-          </div>
-          {errors.releaseDate && <div>{errors.releaseDate}</div>}
+          <TextInput
+            id="releaseDate"
+            label="Release date"
+            type="date"
+            value={releaseDate}
+            error={errors.releaseDate}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
 
-          <div>
-            <label htmlFor="size">Size</label>
-            <br />
-            <input
-              type="number"
-              step=".5"
-              id="size"
-              value={size}
-              onChange={onChange}
-            />
-          </div>
-          {errors.size && <div>{errors.size}</div>}
+          <TextInput
+            id="size"
+            label="Size"
+            type="number"
+            step=".5"
+            value={size}
+            onChange={onChange}
+            onBlur={onBlur}
+            error={errors.size}
+          />
 
           <button type="submit">Add Shoe</button>
         </form>
