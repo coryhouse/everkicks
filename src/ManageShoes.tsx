@@ -12,31 +12,37 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
 
   return (
     <>
-      <h1>Everkicks: Manage Shoes</h1>
+      <h1>Manage Shoes</h1>
 
-      <form
-        onSubmit={(event) => {
-          event.preventDefault(); // Hey browser, don't post back
-          setShoes([...shoes, shoe]);
-          setShoe("");
-        }}
-      >
-        <label htmlFor="shoe-name">Shoe name</label>
-        <br />
-        <input
-          type="text"
-          id="shoe-name"
-          value={shoe}
-          onChange={(event) => setShoe(event.target.value)}
-        />
-        <button type="submit">Add Shoe</button>
-      </form>
+      <section>
+        <h2>Add Shoe</h2>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault(); // Hey browser, don't post back
+            setShoes([...shoes, shoe]);
+            setShoe("");
+          }}
+        >
+          <label htmlFor="shoe-name">Shoe name</label>
+          <br />
+          <input
+            type="text"
+            id="shoe-name"
+            value={shoe}
+            onChange={(event) => setShoe(event.target.value)}
+          />
+          <button type="submit">Add Shoe</button>
+        </form>
+      </section>
 
-      <ul>
-        {shoes.map((shoe) => (
-          <li>{shoe}</li>
-        ))}
-      </ul>
+      <section>
+        <h2>Shoes</h2>
+        <ul>
+          {shoes.map((shoe) => (
+            <li>{shoe}</li>
+          ))}
+        </ul>
+      </section>
     </>
   );
 }
