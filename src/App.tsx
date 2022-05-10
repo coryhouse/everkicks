@@ -2,9 +2,19 @@ import { useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import ManageShoes from "./ManageShoes";
+import { Shoe } from "./types/types";
 
 export default function App() {
-  const [shoes, setShoes] = useState(["Nike Air Max", "Reebok Pump"]);
+  const [shoes, setShoes] = useState<Shoe[]>([
+    {
+      brand: "Nike",
+      name: "Air Max",
+    },
+    {
+      brand: "Reebok",
+      name: "Pump",
+    },
+  ]);
 
   return (
     <BrowserRouter>
