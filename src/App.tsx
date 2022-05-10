@@ -5,16 +5,7 @@ import ManageShoes from "./ManageShoes";
 import { Shoe } from "./types/types";
 
 export default function App() {
-  const [shoes, setShoes] = useState<Shoe[]>([
-    {
-      brand: "Nike",
-      name: "Air Max",
-    },
-    {
-      brand: "Reebok",
-      name: "Pump",
-    },
-  ]);
+  const [shoes, setShoes] = useState<Shoe[]>([]);
 
   return (
     <BrowserRouter>
