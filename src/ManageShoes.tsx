@@ -35,14 +35,14 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
         <form
           onSubmit={(event) => {
             event.preventDefault(); // Hey browser, don't post back
-            // setShoes([...shoes, { name: shoe, brand: brand }]);
-            // setShoe("");
+            setShoes([...shoes, shoe]);
+            setShoe(newShoe);
           }}
         >
           <div>
             <label htmlFor="brand">Brand</label>
             <br />
-            <select id="brand" value={brand ?? ""} onChange={onChange}>
+            <select id="brand" value={brand} onChange={onChange}>
               <option value="">Select brand</option>
               <option value="Nike">Nike</option>
               <option value="Adidas">Adidas</option>
@@ -63,7 +63,9 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
         <h2>Shoes</h2>
         <ul>
           {shoes.map((shoe) => (
-            <li>{shoe.name}</li>
+            <li>
+              {shoe.brand} {shoe.name}
+            </li>
           ))}
         </ul>
       </section>
