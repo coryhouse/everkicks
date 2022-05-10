@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, FocusEventHandler } from "react";
 
 interface Option {
   /** Value for option */
@@ -20,6 +20,9 @@ interface SelectInputProps {
   /** Select input onChange handler */
   onChange: ChangeEventHandler<HTMLSelectElement>;
 
+  /** Text input's onBlur handler */
+  onBlur?: FocusEventHandler<HTMLSelectElement>;
+
   /** Select input label */
   label: string;
 
@@ -32,22 +35,37 @@ export default function SelectInput({
   options,
   error,
   onChange,
+  onBlur,
   label,
   id,
 }: SelectInputProps) {
+  const inputProps: any = {
+    id,
+    value,
+    label,
+    onChange,
+    onBlur,
+  };
+
+  if (error) {
+    inputProps["aria-invalid"] = true;
+    inputProps["aria-describedby"] = id + "-error";
+  }
+
   return (
     <div>
       <label htmlFor={id}>{label}</label>
       <br />
-      <select id={id} value={value} onChange={onChange}>
+      <select {...inputProps}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label ?? option.value}
           </option>
         ))}
       </select>
-
-      {error && <div>{error}</div>}
+      <p id={id + "-error"} role="alert">
+        {error}
+      </p>
     </div>
   );
 }
