@@ -11,7 +11,9 @@ export default function Home({ shoes }: HomeProps) {
 
       <ul>
         {shoes.map((shoe) => (
-          <li>{shoe.name}</li>
+          <li>
+            {shoe.brand} {shoe.name}
+          </li>
         ))}
       </ul>
     </>
