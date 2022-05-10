@@ -1,5 +1,7 @@
+import { Shoe } from "./types/types";
+
 type HomeProps = {
-  shoes: string[];
+  shoes: Shoe[];
 };
 
 export default function Home({ shoes }: HomeProps) {
@@ -9,7 +11,7 @@ export default function Home({ shoes }: HomeProps) {
 
       <ul>
         {shoes.map((shoe) => (
-          <li>{shoe}</li>
+          <li>{shoe.name}</li>
         ))}
       </ul>
     </>
