@@ -21,7 +21,7 @@ export async function addShoe(newShoe: NewShoe): Promise<Shoe> {
   return savedShoe;
 }
 
-export async function deleteShoe(shoeId: number) {
+export async function deleteShoe(shoeId: number): Promise<void> {
   const resp = await fetch(`http://localhost:3001/shoes/${shoeId}`, {
     method: "DELETE",
   });
