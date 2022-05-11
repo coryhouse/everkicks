@@ -1,10 +1,17 @@
+import { useEffect, useState } from "react";
+import { getShoes } from "./api/shoeApi";
 import { Shoe } from "./types/types";
 
-type HomeProps = {
-  shoes: Shoe[];
-};
+export default function Home() {
+  const [shoes, setShoes] = useState<Shoe[]>([]);
 
-export default function Home({ shoes }: HomeProps) {
+  useEffect(() => {
+    async function fetch() {
+      const shoes = await getShoes();
+    }
+    fetch();
+  });
+
   return (
     <>
       <h1>Everkicks</h1>
