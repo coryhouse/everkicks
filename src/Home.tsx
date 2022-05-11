@@ -1,21 +1,11 @@
-import { useEffect, useState } from "react";
-import { getShoes } from "./api/shoeApi";
 import ShoeList from "./ShoeList";
 import { Shoe } from "./types/types";
 
-export default function Home() {
-  const [shoes, setShoes] = useState<Shoe[]>([]);
+type HomeProps = {
+  shoes: Shoe[];
+};
 
-  useEffect(() => {
-    async function fetch() {
-      const shoesResp = await getShoes();
-      setShoes(shoesResp);
-    }
-    fetch();
-    // Dependency array specifies when this should re-run.
-    // Since it should only run once, we declare an empty array.
-  }, []);
-
+export default function Home({ shoes }: HomeProps) {
   return (
     <>
       <h1>Everkicks</h1>
