@@ -21,11 +21,7 @@ export default function InputWrapper({
       <label htmlFor={id}>{label}</label>
       <br />
       {children}
-      <p
-        id={id + "-error"}
-        aria-label={error}
-        role={error ? "alert" : undefined}
-      >
+      <p id={id + "-error"} aria-label={error} role="alert">
         {error}
       </p>
     </div>
