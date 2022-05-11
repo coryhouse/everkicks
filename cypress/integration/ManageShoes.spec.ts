@@ -17,7 +17,7 @@ describe("ManageShoes", () => {
     // Fill form
     cy.findByLabelText("Brand").select("British Knights");
     cy.findByLabelText("Shoe name").type("BK1");
-    cy.findByLabelText("Price").type("49.95");
+    cy.findByLabelText("Price").clear().type("49.95");
     cy.findByLabelText("Release date").type("1989-11-29");
     cy.findByLabelText("Size").type("5");
     cy.findByRole("button", { name: "Add Shoe" }).click();
