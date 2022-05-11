@@ -176,6 +176,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
       </section>
 
       <section>
+        <h2>Shoes</h2>
         <ShoeList shoes={shoes} />
       </section>
     </>
