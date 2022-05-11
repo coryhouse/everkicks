@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe("ManageShoes", () => {
-  it("should support adding a shoe and displaying the shoe on the homepage", () => {
+  it("should support adding a shoe, displaying it on the homepage, and deleting it", () => {
     cy.visit("http://localhost:3000/admin/shoes");
 
     // Assure existing shoes display
@@ -37,11 +37,26 @@ describe("ManageShoes", () => {
     cy.findByLabelText("Release date").should("be.empty");
     cy.findByLabelText("Size").should("be.empty");
 
+    // Nav to Home
     cy.findByRole("navigation").findByRole("link", { name: "Home" }).click();
+
+    // Delete buttons should NOT show
+    cy.findByRole("button", { name: "Delete British Knights BK1" }).should(
+      "not.exist"
+    );
 
     // We've moved to a new page, so assure we're on the new URL
     cy.url().should("eq", "http://localhost:3000/");
 
     cy.findByText(/British Knights/);
+
+    // Now, let's test delete, so go to the manage page
+    cy.findByRole("navigation")
+      .findByRole("link", { name: "Manage Shoes" })
+      .click();
+
+    cy.findByRole("button", { name: "Delete British Knights BK1" }).click();
+
+    cy.findAllByRole("alert").findByText(/British Knights BK1 deleted./);
   });
 });
