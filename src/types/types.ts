@@ -7,3 +7,5 @@ export type Shoe = {
   price: number;
   releaseDate: string;
 };
+
+export type ReplaceTypes<T, V> = { [K in keyof T]: T[K] extends Array<infer U> ? ReplaceTypes<U, V>[] : V };

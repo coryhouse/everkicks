@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SelectInput from "./reusable/SelectInput";
 import TextInput from "./reusable/TextInput";
-import { Shoe } from "./types/types";
+import { ReplaceTypes, Shoe } from "./types/types";
 
 interface ManageShoesProps {
   shoes: Shoe[];
@@ -18,37 +18,32 @@ const newShoe: Shoe = {
   size: 0,
 };
 
-type Errors = {
-  name: string;
-  brand: string;
-  price: string;
-  releaseDate: string;
-  size: string;
-};
-
-// type Touched = {
-//   name: boolean;
-//   brand: boolean;
-//   price: boolean;
-//   releaseDate: boolean;
-//   size: boolean;
-// };
-
-const untouchedForm = {
-  name: false,
-  brand: false,
-  price: false,
-  releaseDate: false,
-  size: false,
-};
+type Errors = Partial<ReplaceTypes<Shoe, string>>;
+type Touched = Partial<ReplaceTypes<Shoe, boolean>>;
 
 type Status = "Idle" | "Submitting" | "Submitted";
+
+const REQUIRED_FIELDS: (keyof Shoe)[] = [
+    "name",
+    "brand",
+    "price",
+    "releaseDate",
+    "size"
+];
+
+function toHumanReadable(str: string): string {
+  return Array.from(str.matchAll(/([A-Z]|^)([a-z]+)/g)).map(m => m[0].toLowerCase()).join(" ");
+}
+
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
   // Declare stuff in state that changes over time.
   // That way React knows to re-render when the state changes
   const [shoe, setShoe] = useState<Shoe>(newShoe);
-  const [touched, setTouched] = useState(untouchedForm);
+  const [touched, setTouched] = useState<Touched>({});
   const [status, setStatus] = useState<Status>("Idle");
 
   const { name, brand, price, releaseDate, size } = shoe;
@@ -63,21 +58,12 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
   }
 
   function validate() {
-    const errors: Partial<Errors> = {};
-    if ((touched.brand || status === "Submitted") && !shoe.brand)
-      errors.brand = "Brand is required.";
-
-    if ((touched.name || status === "Submitted") && !shoe.name)
-      errors.name = "Name is required.";
-
-    if ((touched.price || status === "Submitted") && !shoe.price)
-      errors.price = "Price is required.";
-
-    if ((touched.releaseDate || status === "Submitted") && !shoe.releaseDate)
-      errors.releaseDate = "Release date is required.";
-
-    if ((touched.size || status === "Submitted") && !shoe.size)
-      errors.size = "Size is required.";
+    const errors: Errors = {};
+    REQUIRED_FIELDS.forEach(field => {
+      if ((touched[field] || status ==="Submitted") && !shoe[field]) {
+        errors[field] = `${capitalize(toHumanReadable(field))} is required.`;
+      }
+    });
 
     return errors;
   }
