@@ -57,6 +57,8 @@ describe("ManageShoes", () => {
 
     cy.findByRole("button", { name: "Delete British Knights BK1" }).click();
 
-    cy.findByText(`British Knights BK1 deleted.`);
+    cy.get(".Toastify")
+      .findByRole("alert")
+      .findByText("British Knights BK1 deleted.");
   });
 });
