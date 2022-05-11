@@ -1,7 +1,8 @@
-import { FormEvent, FormEventHandler, useState } from "react";
+import { FormEvent, useState } from "react";
 import { addShoe } from "./api/shoeApi";
 import SelectInput from "./reusable/SelectInput";
 import TextInput from "./reusable/TextInput";
+import ShoeList from "./ShoeList";
 import { NewShoe, Shoe } from "./types/types";
 
 interface ManageShoesProps {
@@ -175,14 +176,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
       </section>
 
       <section>
-        <h2>Shoes</h2>
-        <ul>
-          {shoes.map((shoe) => (
-            <li>
-              {shoe.brand} {shoe.name}
-            </li>
-          ))}
-        </ul>
+        <ShoeList shoes={shoes} />
       </section>
     </>
   );
