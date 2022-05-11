@@ -4,6 +4,10 @@ describe("ManageShoes", () => {
   it("should support adding a shoe and displaying the shoe on the homepage", () => {
     cy.visit("http://localhost:3000/admin/shoes");
 
+    // Assure existing shoes display
+    cy.findByRole("heading", { name: "Nike Air Force One" });
+    cy.findByRole("heading", { name: "Adidas Ultraboost" });
+
     // First, check validation by submitting an empty form
     cy.findByRole("button", { name: "Add Shoe" }).click();
 
