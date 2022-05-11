@@ -21,6 +21,13 @@ export async function addShoe(newShoe: NewShoe): Promise<Shoe> {
   return savedShoe;
 }
 
+export async function deleteShoe(shoeId: number) {
+  const resp = await fetch(`http://localhost:3001/shoes/${shoeId}`, {
+    method: "DELETE",
+  });
+  if (!resp.ok) throw resp;
+}
+
 // Equivalent using promises
 // export function getShoes2() {
 //   return fetch("http://localhost:3001/shoes").then((resp) => {
