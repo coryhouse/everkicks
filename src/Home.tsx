@@ -1,4 +1,5 @@
 import ShoeList from "./ShoeList";
+import Spinner from "./Spinner";
 import { Shoe } from "./types/types";
 
 type HomeProps = {
@@ -9,7 +10,7 @@ export default function Home({ shoes }: HomeProps) {
   return (
     <>
       <h1>Everkicks</h1>
-      <ShoeList shoes={shoes} />
+      {shoes.length === 0 ? <Spinner /> : <ShoeList shoes={shoes} />}
     </>
   );
 }
