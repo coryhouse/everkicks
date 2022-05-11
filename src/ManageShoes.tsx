@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import { addShoe, deleteShoe } from "./api/shoeApi";
+import LoadingContainer from "./LoadingContainer";
 import SelectInput from "./reusable/SelectInput";
 import TextInput from "./reusable/TextInput";
 import ShoeList from "./ShoeList";
@@ -119,73 +120,75 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
     <>
       <h1>Manage Shoes</h1>
 
-      <section>
-        <h2>Add Shoe</h2>
-        <form onSubmit={onSubmit}>
-          <SelectInput
-            id="brand"
-            label="Brand"
-            value={brand}
-            onChange={onChange}
-            onBlur={onBlur}
-            options={[
-              { value: "", label: "Select Brand" },
-              { value: "Nike" },
-              { value: "Adidas" },
-              { value: "British Knights" },
-            ]}
-            error={errors.brand}
-          />
+      <LoadingContainer isLoading={shoes.length === 0}>
+        <section>
+          <h2>Add Shoe</h2>
+          <form onSubmit={onSubmit}>
+            <SelectInput
+              id="brand"
+              label="Brand"
+              value={brand}
+              onChange={onChange}
+              onBlur={onBlur}
+              options={[
+                { value: "", label: "Select Brand" },
+                { value: "Nike" },
+                { value: "Adidas" },
+                { value: "British Knights" },
+              ]}
+              error={errors.brand}
+            />
 
-          <TextInput
-            id="name"
-            label="Shoe name"
-            value={name}
-            onChange={onChange}
-            onBlur={onBlur}
-            error={errors.name}
-          />
+            <TextInput
+              id="name"
+              label="Shoe name"
+              value={name}
+              onChange={onChange}
+              onBlur={onBlur}
+              error={errors.name}
+            />
 
-          <TextInput
-            id="price"
-            label="Price"
-            type="number"
-            step=".01"
-            error={errors.price}
-            value={price}
-            onChange={onChange}
-            onBlur={onBlur}
-          />
+            <TextInput
+              id="price"
+              label="Price"
+              type="number"
+              step=".01"
+              error={errors.price}
+              value={price}
+              onChange={onChange}
+              onBlur={onBlur}
+            />
 
-          <TextInput
-            id="releaseDate"
-            label="Release date"
-            type="date"
-            value={releaseDate}
-            error={errors.releaseDate}
-            onChange={onChange}
-            onBlur={onBlur}
-          />
+            <TextInput
+              id="releaseDate"
+              label="Release date"
+              type="date"
+              value={releaseDate}
+              error={errors.releaseDate}
+              onChange={onChange}
+              onBlur={onBlur}
+            />
 
-          <TextInput
-            id="size"
-            label="Size"
-            type="number"
-            step=".5"
-            value={size}
-            onChange={onChange}
-            onBlur={onBlur}
-            error={errors.size}
-          />
+            <TextInput
+              id="size"
+              label="Size"
+              type="number"
+              step=".5"
+              value={size}
+              onChange={onChange}
+              onBlur={onBlur}
+              error={errors.size}
+            />
 
-          <button type="submit">Add Shoe</button>
-        </form>
-      </section>
+            <button type="submit">Add Shoe</button>
+          </form>
+        </section>
 
-      <section>
-        <h2>Shoes</h2>
-        <ShoeList shoes={shoes} onDeleteClick={onDelete} />
-      </section>
+        <section>
+          <h2>Shoes</h2>
+          <ShoeList shoes={shoes} onDeleteClick={onDelete} />
+        </section>
+      </LoadingContainer>
     </>
   );
 }
