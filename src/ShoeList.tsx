@@ -4,7 +4,7 @@ type ShoeListProps = {
   shoes: Shoe[];
 
   /** When passed, the delete button will render and call this func */
-  onDeleteClick?: (shoeId: number) => void;
+  onDeleteClick?: (shoe: Shoe) => void;
 };
 
 export default function ShoeList({ shoes, onDeleteClick }: ShoeListProps) {
@@ -25,8 +25,8 @@ export default function ShoeList({ shoes, onDeleteClick }: ShoeListProps) {
 
             {onDeleteClick && (
               <button
-                aria-label={shoe.brand + " " + shoe.name}
-                onClick={() => onDeleteClick(shoe.id)}
+                aria-label={`Delete ${shoe.brand} ${shoe.name}`}
+                onClick={() => onDeleteClick(shoe)}
               >
                 Delete
               </button>
