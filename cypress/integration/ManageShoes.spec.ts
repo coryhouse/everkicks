@@ -8,11 +8,11 @@ describe("ManageShoes", () => {
     cy.findByRole("button", { name: "Add Shoe" }).click();
 
     // Check for error messages
-    cy.findByText("Brand is required.");
-    cy.findByText("Name is required.");
-    cy.findByText("Price is required.");
-    cy.findByText("Release date is required.");
-    cy.findByText("Size is required.");
+    cy.findByRole("alert", { name: "Brand is required." });
+    cy.findByRole("alert", { name: "Name is required." });
+    cy.findByRole("alert", { name: "Price is required." });
+    cy.findByRole("alert", { name: "Release date is required." });
+    cy.findByRole("alert", { name: "Size is required." });
 
     // Fill form
     cy.findByLabelText("Brand").select("British Knights");
