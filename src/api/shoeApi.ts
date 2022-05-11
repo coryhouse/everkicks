@@ -1,8 +1,24 @@
-export async function getShoes() {
+import { NewShoe, Shoe } from "../types/types";
+
+export async function getShoes(): Promise<Shoe[]> {
   const resp = await fetch("http://localhost:3001/shoes");
   if (!resp.ok) throw resp;
   const shoes = await resp.json();
   return shoes;
+}
+
+export async function addShoe(newShoe: NewShoe): Promise<Shoe> {
+  const resp = await fetch("http://localhost:3001/shoes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newShoe),
+  });
+
+  if (!resp.ok) throw resp;
+  const savedShoe = await resp.json();
+  return savedShoe;
 }
 
 // Equivalent using promises
