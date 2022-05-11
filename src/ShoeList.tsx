@@ -2,9 +2,12 @@ import { Shoe } from "./types/types";
 
 type ShoeListProps = {
   shoes: Shoe[];
+
+  /** When passed, the delete button will render and call this func */
+  onDeleteClick?: (shoeId: number) => void;
 };
 
-export default function ShoeList({ shoes }: ShoeListProps) {
+export default function ShoeList({ shoes, onDeleteClick }: ShoeListProps) {
   return (
     <ul style={{ listStyleType: "none", display: "flex", padding: 0 }}>
       {shoes.map((shoe) => (
@@ -19,6 +22,15 @@ export default function ShoeList({ shoes }: ShoeListProps) {
               <time dateTime={shoe.releaseDate}>{shoe.releaseDate}</time>
             </p>
             <p style={{ fontWeight: "bold", color: "green" }}>${shoe.price}</p>
+
+            {onDeleteClick && (
+              <button
+                aria-label={shoe.brand + " " + shoe.name}
+                onClick={() => onDeleteClick(shoe.id)}
+              >
+                Delete
+              </button>
+            )}
           </article>
         </li>
       ))}
