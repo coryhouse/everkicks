@@ -31,13 +31,13 @@ const REQUIRED_FIELDS: (keyof Shoe)[] = [
     "size"
 ];
 
-function toHumanReadable(str: string): string {
-  return Array.from(str.matchAll(/([A-Z]|^)([a-z]+)/g)).map(m => m[0].toLowerCase()).join(" ");
-}
-
-function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
+const FIELD_NAMES: ReplaceTypes<Shoe, string> = {
+    brand: "Brand",
+    name: "Name",
+    price: "Price",
+    releaseDate: "Release date",
+    size: "Size"
+};
 
 export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
   // Declare stuff in state that changes over time.
@@ -61,7 +61,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
     const errors: Errors = {};
     REQUIRED_FIELDS.forEach(field => {
       if ((touched[field] || status ==="Submitted") && !shoe[field]) {
-        errors[field] = `${capitalize(toHumanReadable(field))} is required.`;
+        errors[field] = `${FIELD_NAMES[field]} is required.`;
       }
     });
 
