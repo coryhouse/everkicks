@@ -62,7 +62,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
     setShoe({ ...shoe, [event.target.id]: event.target.value });
   }
 
-  function validate() {
+  function validateForm(status: Status) {
     const errors: Partial<Errors> = {};
     if ((touched.brand || status === "Submitted") && !shoe.brand)
       errors.brand = "Brand is required.";
@@ -91,8 +91,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
   }
 
   // Derived state - Calculated on each render.
-  const errors = validate();
-  const isValid = Object.keys(errors).length === 0;
+  const errors = validateForm(status);
 
   return (
     <>
@@ -103,9 +102,10 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
         <form
           onSubmit={(event) => {
             event.preventDefault(); // Hey browser, don't post back
-            setStatus("Submitting");
+            setStatus("Submitted");
+            const validationErrors = validateForm("Submitted");
+            const isValid = Object.keys(validationErrors).length === 0;
             if (!isValid) {
-              setStatus("Submitted");
               return;
             }
             setShoes([...shoes, shoe]);
