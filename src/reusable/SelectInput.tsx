@@ -1,4 +1,5 @@
 import { ChangeEventHandler, FocusEventHandler } from "react";
+import InputWrapper from "./InputWrapper";
 
 interface Option {
   /** Value for option */
@@ -53,9 +54,7 @@ export default function SelectInput({
   }
 
   return (
-    <div>
-      <label htmlFor={id}>{label}</label>
-      <br />
+    <InputWrapper id={id} label={label} error={error}>
       <select {...inputProps}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -63,13 +62,6 @@ export default function SelectInput({
           </option>
         ))}
       </select>
-      <p
-        id={id + "-error"}
-        aria-label={error}
-        role={error ? "alert" : undefined}
-      >
-        {error}
-      </p>
-    </div>
+    </InputWrapper>
   );
 }

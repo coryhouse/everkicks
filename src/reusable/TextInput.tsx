@@ -1,4 +1,5 @@
 import { ChangeEventHandler, FocusEventHandler } from "react";
+import InputWrapper from "./InputWrapper";
 
 type TextInputProps = {
   /** Text input value */
@@ -61,17 +62,8 @@ export default function TextInput({
   }
 
   return (
-    <div>
-      <label htmlFor={id}>{label}</label>
-      <br />
+    <InputWrapper id={id} label={label} error={error}>
       <input {...inputProps} />
-      <p
-        id={id + "-error"}
-        aria-label={error}
-        role={error ? "alert" : undefined}
-      >
-        {error}
-      </p>
-    </div>
+    </InputWrapper>
   );
 }
