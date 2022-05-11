@@ -65,11 +65,13 @@ export default function TextInput({
       <label htmlFor={id}>{label}</label>
       <br />
       <input {...inputProps} />
-      {error && (
-        <p id={id + "-error"} role="alert">
-          {error}
-        </p>
-      )}
+      <p
+        id={id + "-error"}
+        aria-label={error}
+        role={error ? "alert" : undefined}
+      >
+        {error}
+      </p>
     </div>
   );
 }

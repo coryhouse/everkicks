@@ -63,7 +63,11 @@ export default function SelectInput({
           </option>
         ))}
       </select>
-      <p id={id + "-error"} role="alert">
+      <p
+        id={id + "-error"}
+        aria-label={error}
+        role={error ? "alert" : undefined}
+      >
         {error}
       </p>
     </div>
