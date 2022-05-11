@@ -1,6 +1,7 @@
 {
   "shoes": [
     {
+      "id": 1,
       "brand": "Nike",
       "name": "Air Force One",
       "size": 7,
@@ -8,6 +9,7 @@
       "releaseDate": "1998-01-01"
     },
     {
+      "id": 2,
       "brand": "Adidas",
       "name": "Ultraboost",
       "size": 5,
