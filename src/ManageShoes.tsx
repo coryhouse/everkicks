@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
-import { addShoe } from "./api/shoeApi";
+import { toast } from "react-toastify";
+import { addShoe, deleteShoe } from "./api/shoeApi";
 import SelectInput from "./reusable/SelectInput";
 import TextInput from "./reusable/TextInput";
 import ShoeList from "./ShoeList";
@@ -105,6 +106,12 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
     setShoe(newShoe);
   }
 
+  async function onDelete(shoe: Shoe) {
+    await deleteShoe(shoe.id);
+    toast.success(`${shoe.brand} ${shoe.name} deleted.`);
+    setShoes(shoes.filter((s) => s.id !== shoe.id));
+  }
+
   // Derived state - Calculated on each render.
   const errors = validateForm(status);
 
@@ -177,7 +184,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
 
       <section>
         <h2>Shoes</h2>
-        <ShoeList shoes={shoes} />
+        <ShoeList shoes={shoes} onDeleteClick={onDelete} />
       </section>
     </>
   );
