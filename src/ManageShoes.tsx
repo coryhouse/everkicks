@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { FormEvent, FormEventHandler, useState } from "react";
+import { addShoe } from "./api/shoeApi";
 import SelectInput from "./reusable/SelectInput";
 import TextInput from "./reusable/TextInput";
-import { Shoe } from "./types/types";
+import { NewShoe, Shoe } from "./types/types";
 
 interface ManageShoesProps {
   shoes: Shoe[];
@@ -10,7 +11,7 @@ interface ManageShoesProps {
 
 // Declaring outside the component so that it is only allocated once
 // Note: default values only apply once, but are parsed on every render.
-const newShoe: Shoe = {
+const newShoe: NewShoe = {
   name: "",
   brand: "",
   price: 0,
@@ -47,7 +48,7 @@ type Status = "Idle" | "Submitting" | "Submitted";
 export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
   // Declare stuff in state that changes over time.
   // That way React knows to re-render when the state changes
-  const [shoe, setShoe] = useState<Shoe>(newShoe);
+  const [shoe, setShoe] = useState<NewShoe>(newShoe);
   const [touched, setTouched] = useState(untouchedForm);
   const [status, setStatus] = useState<Status>("Idle");
 
@@ -90,6 +91,19 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
     setTouched({ ...touched, [event.target.id]: true });
   }
 
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // Hey browser, don't post back
+    setStatus("Submitted");
+    const validationErrors = validateForm("Submitted");
+    const isValid = Object.keys(validationErrors).length === 0;
+    if (!isValid) {
+      return;
+    }
+    const savedShoe = await addShoe(shoe);
+    setShoes([...shoes, savedShoe]);
+    setShoe(newShoe);
+  }
+
   // Derived state - Calculated on each render.
   const errors = validateForm(status);
 
@@ -99,19 +113,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
 
       <section>
         <h2>Add Shoe</h2>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault(); // Hey browser, don't post back
-            setStatus("Submitted");
-            const validationErrors = validateForm("Submitted");
-            const isValid = Object.keys(validationErrors).length === 0;
-            if (!isValid) {
-              return;
-            }
-            setShoes([...shoes, shoe]);
-            setShoe(newShoe);
-          }}
-        >
+        <form onSubmit={onSubmit}>
           <SelectInput
             id="brand"
             label="Brand"
