@@ -10,6 +10,7 @@ import { NewShoe, Shoe } from "./types/types";
 interface ManageShoesProps {
   shoes: Shoe[];
   setShoes: (shoes: Shoe[]) => void;
+  isLoading: boolean;
 }
 
 // Declaring outside the component so that it is only allocated once
@@ -48,7 +49,11 @@ const untouchedForm = {
 
 type Status = "Idle" | "Submitting" | "Submitted";
 
-export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
+export default function ManageShoes({
+  shoes,
+  setShoes,
+  isLoading,
+}: ManageShoesProps) {
   // Declare stuff in state that changes over time.
   // That way React knows to re-render when the state changes
   const [shoe, setShoe] = useState<NewShoe>(newShoe);
@@ -120,7 +125,7 @@ export default function ManageShoes({ shoes, setShoes }: ManageShoesProps) {
     <>
       <h1>Manage Shoes</h1>
 
-      <LoadingContainer isLoading={shoes.length === 0}>
+      <LoadingContainer isLoading={isLoading}>
         <section>
           <h2>Add Shoe</h2>
           <form onSubmit={onSubmit}>

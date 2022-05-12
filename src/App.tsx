@@ -7,11 +7,13 @@ import { Shoe } from "./types/types";
 
 export default function App() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetch() {
       const shoesResp = await getShoes();
       setShoes(shoesResp);
+      setIsLoading(false);
     }
     fetch();
     // Dependency array specifies when this should re-run.
@@ -37,7 +39,13 @@ export default function App() {
           <Route path="/" element={<Home shoes={shoes} />} />
           <Route
             path="/admin/shoes"
-            element={<ManageShoes shoes={shoes} setShoes={setShoes} />}
+            element={
+              <ManageShoes
+                isLoading={isLoading}
+                shoes={shoes}
+                setShoes={setShoes}
+              />
+            }
           />
         </Routes>
       </main>
