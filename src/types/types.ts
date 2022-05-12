@@ -9,3 +9,5 @@ export interface NewShoe {
 export interface Shoe extends NewShoe {
   id: number;
 }
+
+export type User = "customer" | "admin";
