@@ -1,8 +1,7 @@
 import { useState } from "react";
 import SelectInput from "./reusable/SelectInput";
 import "./DevTools.css";
-
-export type User = "customer" | "admin";
+import { User } from "./types/types";
 
 type DevToolsProps = {
   user: User;
