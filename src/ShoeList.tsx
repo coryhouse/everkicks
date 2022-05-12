@@ -8,6 +8,8 @@ type ShoeListProps = {
 };
 
 export default function ShoeList({ shoes, onDeleteClick }: ShoeListProps) {
+  if (shoes.length === 0) return <p>No shoes :(</p>;
+
   return (
     <ul style={{ listStyleType: "none", display: "flex", padding: 0 }}>
       {shoes.map((shoe) => (
