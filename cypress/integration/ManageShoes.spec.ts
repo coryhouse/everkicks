@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import { NewShoe } from "../../src/types/types";
 
 function deleteShoe(brandAndName: string) {
   cy.findByRole("button", { name: `Delete ${brandAndName}` }).click();
@@ -8,13 +9,21 @@ function deleteShoe(brandAndName: string) {
     .findByText(`${brandAndName} deleted.`);
 }
 
+function addShoe(shoe: NewShoe) {
+  cy.findByLabelText("Brand").select(shoe.brand);
+  cy.findByLabelText("Shoe name").type(shoe.name);
+  cy.findByLabelText("Price").clear().type(shoe.price.toString());
+  cy.findByLabelText("Release date").type(shoe.releaseDate);
+  cy.findByLabelText("Size").type(shoe.size.toString());
+  cy.findByRole("button", { name: "Add Shoe" }).click();
+}
+
 describe("ManageShoes", () => {
   it("should support adding a shoe, displaying it on the homepage, and deleting it", () => {
     cy.visit("http://localhost:3000/admin/shoes");
 
     // Assure existing shoes display
     cy.findByRole("heading", { name: "Nike Air Force One" });
-    cy.findByRole("heading", { name: "Adidas Ultraboost" });
 
     // First, check validation by submitting an empty form
     cy.findByRole("button", { name: "Add Shoe" }).click();
@@ -27,12 +36,13 @@ describe("ManageShoes", () => {
     cy.findByRole("alert", { name: "Size is required." });
 
     // Fill form
-    cy.findByLabelText("Brand").select("British Knights");
-    cy.findByLabelText("Shoe name").type("BK1");
-    cy.findByLabelText("Price").clear().type("49.95");
-    cy.findByLabelText("Release date").type("1989-11-29");
-    cy.findByLabelText("Size").type("5");
-    cy.findByRole("button", { name: "Add Shoe" }).click();
+    addShoe({
+      brand: "British Knights",
+      name: "BK1",
+      price: 49.95,
+      releaseDate: "1989-11-29",
+      size: 5,
+    });
 
     cy.findByRole("heading", { name: "Shoes" })
       .closest("section")
@@ -66,8 +76,16 @@ describe("ManageShoes", () => {
     // Delete all shoes to confirm that the "No shoes" message displays
     deleteShoe("British Knights BK1");
     deleteShoe("Nike Air Force One");
-    deleteShoe("Adidas Ultraboost");
 
     cy.findByText("No shoes :(");
+
+    // Finally, add the initial shoe back that we deleted
+    addShoe({
+      brand: "Nike",
+      name: "Air Force One",
+      price: 95.0,
+      releaseDate: "1998-01-01",
+      size: 7,
+    });
   });
 });
