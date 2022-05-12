@@ -1,5 +1,13 @@
 /// <reference types="cypress" />
 
+function deleteShoe(brandAndName: string) {
+  cy.findByRole("button", { name: `Delete ${brandAndName}` }).click();
+
+  cy.get(".Toastify")
+    //.findAllByRole("alert")
+    .findByText(`${brandAndName} deleted.`);
+}
+
 describe("ManageShoes", () => {
   it("should support adding a shoe, displaying it on the homepage, and deleting it", () => {
     cy.visit("http://localhost:3000/admin/shoes");
@@ -55,10 +63,11 @@ describe("ManageShoes", () => {
       .findByRole("link", { name: "Manage Shoes" })
       .click();
 
-    cy.findByRole("button", { name: "Delete British Knights BK1" }).click();
+    // Delete all shoes to confirm that the "No shoes" message displays
+    deleteShoe("British Knights BK1");
+    deleteShoe("Nike Air Force One");
+    deleteShoe("Adidas Ultraboost");
 
-    cy.get(".Toastify")
-      .findByRole("alert")
-      .findByText("British Knights BK1 deleted.");
+    cy.findByText("No shoes :(");
   });
 });
