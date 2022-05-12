@@ -5,6 +5,7 @@ import { AppDevTools } from "./AppDevTools";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContextProvider } from "./UserContext";
+import App from "./App";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,7 +14,6 @@ const root = ReactDOM.createRoot(
 root.render(
   <UserContextProvider>
     <ToastContainer />
-    {/* TODO: Only call AppDevTools based on ENV var */}
-    <AppDevTools />
+    {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" ? <AppDevTools /> : <App />}
   </UserContextProvider>
 );
