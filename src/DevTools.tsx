@@ -6,11 +6,17 @@ import { useUserContext } from "./UserContext";
 
 export type GetShoesResponse = "success" | "500";
 
-export default function DevTools() {
+type DevToolProps = {
+  getShoesResponse: GetShoesResponse;
+  setGetShoesResponse: (resp: GetShoesResponse) => void;
+};
+
+export default function DevTools({
+  getShoesResponse,
+  setGetShoesResponse,
+}: DevToolProps) {
   const [isOpen, setIsOpen] = useState(true);
   const { setUser, user } = useUserContext();
-  const [getShoesResponse, setGetShoesResponse] =
-    useState<GetShoesResponse>("success");
 
   return (
     <div className="devtools">

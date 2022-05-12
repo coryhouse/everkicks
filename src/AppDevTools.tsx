@@ -1,15 +1,23 @@
+import { useState } from "react";
 import App from "./App";
-import DevTools from "./DevTools";
+import DevTools, { GetShoesResponse } from "./DevTools";
 import { useWorker } from "./useWorker";
 
 export function AppDevTools() {
-  // TODO: Pass our devtools config to useWorker
-  const isReady = useWorker();
+  const [getShoesResponse, setGetShoesResponse] =
+    useState<GetShoesResponse>("500");
+
+  const isReady = useWorker({
+    getShoesResponse,
+  });
 
   return isReady ? (
     <>
       <App />
-      <DevTools />
+      <DevTools
+        getShoesResponse={getShoesResponse}
+        setGetShoesResponse={setGetShoesResponse}
+      />
     </>
   ) : null;
 }
