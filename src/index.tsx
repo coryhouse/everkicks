@@ -6,11 +6,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContextProvider } from "./UserContext";
 
-if (process.env.NODE_ENV === "development") {
-  const { worker } = require("./mocks/browser");
-  worker.start();
-}
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
