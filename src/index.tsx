@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import { AppDevTools } from "./AppDevTools";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContextProvider } from "./UserContext";
@@ -11,10 +11,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <UserContextProvider>
-      <ToastContainer />
-      <App />
-    </UserContextProvider>
-  </React.StrictMode>
+  <UserContextProvider>
+    <ToastContainer />
+    {/* TODO: Only call AppDevTools based on ENV var */}
+    <AppDevTools />
+  </UserContextProvider>
 );
