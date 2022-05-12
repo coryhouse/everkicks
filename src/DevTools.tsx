@@ -1,21 +1,34 @@
 import { useState } from "react";
 import SelectInput from "./reusable/SelectInput";
+import "./DevTools.css";
 
-export default function DevTools() {
-  const [user, setUser] = useState("customer");
+export type User = "customer" | "admin";
+
+type DevToolsProps = {
+  user: User;
+  setUser: (user: User) => void;
+};
+
+export default function DevTools({ user, setUser }: DevToolsProps) {
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div>
-      <SelectInput
-        id="user"
-        label="User"
-        onChange={(e) => setUser(e.target.value)}
-        value={user}
-        options={[
-          { label: "Customer", value: "customer" },
-          { label: "Admin", value: "admin" },
-        ]}
-      />
+    <div className="devtools">
+      <button onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? "Close" : "Open"}
+      </button>
+      {isOpen && (
+        <SelectInput
+          id="user"
+          label="User"
+          onChange={(e) => setUser(e.target.value as User)}
+          value={user}
+          options={[
+            { label: "Customer", value: "customer" },
+            { label: "Admin", value: "admin" },
+          ]}
+        />
+      )}
     </div>
   );
 }

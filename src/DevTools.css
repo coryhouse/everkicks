@@ -1,0 +1,6 @@
+.devtools {
+  position: absolute;
+  bottom: 0;
+  border: solid 1px lightblue;
+  padding: 16px;
+}
