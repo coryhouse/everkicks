@@ -3,12 +3,10 @@ import SelectInput from "./reusable/SelectInput";
 import "./DevTools.css";
 import { User } from "./types/types";
 import { useUserContext } from "./UserContext";
-import { useWorker } from "./useWorker";
 
 export default function DevTools() {
   const [isOpen, setIsOpen] = useState(true);
   const { setUser, user } = useUserContext();
-  useWorker();
   const [getShoesResponse, setGetShoesResponse] = useState("success");
 
   return (
