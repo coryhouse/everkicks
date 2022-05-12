@@ -7,9 +7,6 @@ import { useUserContext } from "./UserContext";
 
 const Home = lazy(() => import("./Home"));
 const ManageShoes = lazy(() => import("./ManageShoes"));
-const DevTools = lazy(
-  () => import(/* webpackChunkName: "devtools" */ "./DevTools")
-);
 
 export default function App() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
@@ -61,11 +58,6 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
-      {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && (
-        <Suspense fallback={""}>
-          <DevTools />
-        </Suspense>
-      )}
     </BrowserRouter>
   );
 }
