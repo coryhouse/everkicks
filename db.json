@@ -1,12 +1,12 @@
 {
   "shoes": [
     {
-      "id": 1,
-      "brand": "Nike",
       "name": "Air Force One",
-      "size": 7,
-      "price": 95.0,
-      "releaseDate": "1998-01-01"
+      "brand": "Nike",
+      "price": "95",
+      "releaseDate": "1998-01-01",
+      "size": "07",
+      "id": 1
     }
   ]
 }
