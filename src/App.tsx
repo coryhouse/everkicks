@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { getShoes } from "./api/shoeApi";
+import DevTools, { User } from "./DevTools";
 import Home from "./Home";
 import ManageShoes from "./ManageShoes";
 import { Shoe } from "./types/types";
@@ -8,6 +9,7 @@ import { Shoe } from "./types/types";
 export default function App() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User>("customer");
 
   useEffect(() => {
     async function fetch() {
@@ -28,11 +30,14 @@ export default function App() {
             <li>
               <Link to="/">Home</Link>
             </li>
-            <li>
-              <Link to="/admin/shoes">Manage Shoes</Link>
-            </li>
+            {user === "admin" && (
+              <li>
+                <Link to="/admin/shoes">Manage Shoes</Link>
+              </li>
+            )}
           </ul>
         </nav>
+        <p>Hi {user}</p>
       </header>
       <main>
         <Routes>
@@ -49,6 +54,7 @@ export default function App() {
           />
         </Routes>
       </main>
+      <DevTools user={user} setUser={setUser} />
     </BrowserRouter>
   );
 }
