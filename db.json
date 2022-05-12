@@ -7,14 +7,6 @@
       "size": 7,
       "price": 95.0,
       "releaseDate": "1998-01-01"
-    },
-    {
-      "id": 2,
-      "brand": "Adidas",
-      "name": "Ultraboost",
-      "size": 5,
-      "price": 95.0,
-      "releaseDate": "2020-02-04"
     }
   ]
 }
