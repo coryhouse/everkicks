@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { getShoes } from "./api/shoeApi";
 import DevTools, { User } from "./DevTools";
-import Home from "./Home";
-import ManageShoes from "./ManageShoes";
+import Spinner from "./Spinner";
 import { Shoe } from "./types/types";
+
+const Home = lazy(() => import("./Home"));
+const ManageShoes = lazy(() => import("./ManageShoes"));
 
 export default function App() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
@@ -40,19 +42,21 @@ export default function App() {
         <p>Hi {user}</p>
       </header>
       <main>
-        <Routes>
-          <Route path="/" element={<Home shoes={shoes} />} />
-          <Route
-            path="/admin/shoes"
-            element={
-              <ManageShoes
-                isLoading={isLoading}
-                shoes={shoes}
-                setShoes={setShoes}
-              />
-            }
-          />
-        </Routes>
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route path="/" element={<Home shoes={shoes} />} />
+            <Route
+              path="/admin/shoes"
+              element={
+                <ManageShoes
+                  isLoading={isLoading}
+                  shoes={shoes}
+                  setShoes={setShoes}
+                />
+              }
+            />
+          </Routes>
+        </Suspense>
       </main>
       <DevTools user={user} setUser={setUser} />
     </BrowserRouter>
