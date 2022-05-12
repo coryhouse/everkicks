@@ -4,10 +4,13 @@ import "./DevTools.css";
 import { User } from "./types/types";
 import { useUserContext } from "./UserContext";
 
+export type GetShoesResponse = "success" | "500";
+
 export default function DevTools() {
   const [isOpen, setIsOpen] = useState(true);
   const { setUser, user } = useUserContext();
-  const [getShoesResponse, setGetShoesResponse] = useState("success");
+  const [getShoesResponse, setGetShoesResponse] =
+    useState<GetShoesResponse>("success");
 
   return (
     <div className="devtools">
@@ -30,7 +33,9 @@ export default function DevTools() {
           <SelectInput
             id="get-shoes"
             label="Get Shoes Response"
-            onChange={(e) => setGetShoesResponse(e.target.value)}
+            onChange={(e) =>
+              setGetShoesResponse(e.target.value as GetShoesResponse)
+            }
             value={getShoesResponse}
             options={[
               { label: "Success", value: "success" },
