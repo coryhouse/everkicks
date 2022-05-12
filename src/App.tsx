@@ -1,12 +1,13 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { getShoes } from "./api/shoeApi";
-import DevTools, { User } from "./DevTools";
+import { User } from "./DevTools";
 import Spinner from "./Spinner";
 import { Shoe } from "./types/types";
 
 const Home = lazy(() => import("./Home"));
 const ManageShoes = lazy(() => import("./ManageShoes"));
+const DevTools = lazy(() => import("./DevTools"));
 
 export default function App() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
@@ -58,7 +59,11 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
-      <DevTools user={user} setUser={setUser} />
+      {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" && (
+        <Suspense fallback={""}>
+          <DevTools user={user} setUser={setUser} />
+        </Suspense>
+      )}
     </BrowserRouter>
   );
 }
