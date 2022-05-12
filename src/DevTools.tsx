@@ -2,14 +2,11 @@ import { useState } from "react";
 import SelectInput from "./reusable/SelectInput";
 import "./DevTools.css";
 import { User } from "./types/types";
+import { useUserContext } from "./UserContext";
 
-type DevToolsProps = {
-  user: User;
-  setUser: (user: User) => void;
-};
-
-export default function DevTools({ user, setUser }: DevToolsProps) {
+export default function DevTools() {
   const [isOpen, setIsOpen] = useState(true);
+  const { setUser, user } = useUserContext();
 
   return (
     <div className="devtools">
