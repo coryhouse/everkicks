@@ -7,7 +7,9 @@ import { Shoe } from "./types/types";
 
 const Home = lazy(() => import("./Home"));
 const ManageShoes = lazy(() => import("./ManageShoes"));
-const DevTools = lazy(() => import("./DevTools"));
+const DevTools = lazy(
+  () => import(/* webpackChunkName: "devtools" */ "./DevTools")
+);
 
 export default function App() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
