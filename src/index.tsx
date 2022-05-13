@@ -8,16 +8,25 @@ import { UserContextProvider } from "./UserContext";
 import App from "./App";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ErrorFallback";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const queryClient = new QueryClient();
+
 root.render(
   <ErrorBoundary FallbackComponent={ErrorFallback}>
-    <UserContextProvider>
-      <ToastContainer />
-      {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" ? <AppDevTools /> : <App />}
-    </UserContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserContextProvider>
+        <ToastContainer />
+        {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" ? (
+          <AppDevTools />
+        ) : (
+          <App />
+        )}
+      </UserContextProvider>
+    </QueryClientProvider>
   </ErrorBoundary>
 );

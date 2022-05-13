@@ -3,9 +3,13 @@ import FastInput from "./FastInput";
 
 type FormStatus = "Idle" | "Submitted";
 
-export default function FastForm() {
-  const [formStatus, setFormStatus] = useState<FormStatus>("Idle");
+type FastFormProps = {
+  slowComponent: React.ReactNode;
+};
 
+export default function FastForm({ slowComponent }: FastFormProps) {
+  const [formStatus, setFormStatus] = useState<FormStatus>("Idle");
+  const [submitCount, setSubmitCount] = useState(0);
   function required(value: string) {
     return !value ? "This is required." : "";
   }
@@ -15,8 +19,11 @@ export default function FastForm() {
       onSubmit={(e) => {
         e.preventDefault();
         setFormStatus("Submitted");
+        setSubmitCount((curValue) => curValue + 1);
       }}
     >
+      {submitCount}
+      {slowComponent}
       <FastInput
         validate={required}
         wasSubmitted={formStatus === "Submitted"}

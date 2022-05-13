@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import { addShoe, deleteShoe } from "./api/shoeApi";
+import ExpensiveTree from "./ExpensiveTree";
 import LoadingContainer from "./LoadingContainer";
 import SelectInput from "./reusable/SelectInput";
 import TextInput from "./reusable/TextInput";
@@ -129,6 +130,7 @@ export default function ManageShoes({
         <section>
           <h2>Add Shoe</h2>
           <form onSubmit={onSubmit}>
+            <ExpensiveTree />
             <SelectInput
               id="brand"
               label="Brand"

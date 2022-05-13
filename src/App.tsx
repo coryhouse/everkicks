@@ -1,37 +1,23 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useQuery } from "react-query";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { getShoes } from "./api/shoeApi";
 import ErrorFallback from "./ErrorFallback";
+import ExpensiveTree from "./ExpensiveTree";
+import FastForm from "./FastForm";
 import Spinner from "./Spinner";
-import { Shoe } from "./types/types";
 import { useUserContext } from "./UserContext";
 
 const Home = lazy(() => import("./Home"));
 const ManageShoes = lazy(() => import("./ManageShoes"));
 
 export default function App() {
-  const [shoes, setShoes] = useState<Shoe[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
   const { user } = useUserContext();
-
-  useEffect(() => {
-    async function fetch() {
-      try {
-        const shoesResp = await getShoes();
-        setShoes(shoesResp);
-        setIsLoading(false);
-      } catch (e) {
-        setError(e as Error);
-      }
-    }
-    fetch();
-    // Dependency array specifies when this should re-run.
-    // Since it should only run once, we declare an empty array.
-  }, []);
+  const { error, data: shoes, isLoading } = useQuery("shoes", getShoes);
 
   if (error) throw error;
+  if (!shoes) return <Spinner />;
 
   return (
     <BrowserRouter>
@@ -40,6 +26,9 @@ export default function App() {
           <ul>
             <li>
               <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/fast-form">Fast form</Link>
             </li>
             {user === "admin" && (
               <li>
@@ -51,31 +40,40 @@ export default function App() {
         <p>Hi {user}</p>
       </header>
       <main>
-        <Suspense fallback={<Spinner />}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ErrorBoundary FallbackComponent={ErrorFallback}>
-                  <Home shoes={shoes} />
-                </ErrorBoundary>
-              }
-            />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <Suspense fallback={<Spinner />}>
+            <Routes>
+              <Route
+                path="/fast-form"
+                element={<FastForm slowComponent={<ExpensiveTree />} />}
+              />
 
-            <Route
-              path="/admin/shoes"
-              element={
-                <ErrorBoundary FallbackComponent={ErrorFallback}>
-                  <ManageShoes
-                    isLoading={isLoading}
-                    shoes={shoes}
-                    setShoes={setShoes}
-                  />
-                </ErrorBoundary>
-              }
-            />
-          </Routes>
-        </Suspense>
+              <Route
+                path="/"
+                element={
+                  <ErrorBoundary FallbackComponent={ErrorFallback}>
+                    <Home shoes={shoes} />
+                  </ErrorBoundary>
+                }
+              />
+
+              <Route
+                path="/admin/shoes"
+                element={
+                  <ErrorBoundary FallbackComponent={ErrorFallback}>
+                    <ManageShoes
+                      isLoading={isLoading}
+                      shoes={shoes}
+                      setShoes={() => {}}
+                    />
+                  </ErrorBoundary>
+                }
+              />
+            </Routes>
+          </Suspense>
+        )}
       </main>
     </BrowserRouter>
   );
