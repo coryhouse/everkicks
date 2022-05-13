@@ -13,7 +13,7 @@ type UserContextProviderProps = {
 const UserContext = createContext<UserContextValue | null>(null);
 
 export function UserContextProvider({ children }: UserContextProviderProps) {
-  const [user, setUser] = useState<User>("customer");
+  const [user, setUser] = useState<User>("admin");
 
   // These are the values we want to expose via context.
   const contextValue = {
