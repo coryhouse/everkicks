@@ -3,18 +3,16 @@ import SelectInput from "./reusable/SelectInput";
 import "./DevTools.css";
 import { User } from "./types/types";
 import { useUserContext } from "./UserContext";
+import { DevToolsConfig } from "./AppDevTools";
 
 export type GetShoesResponse = "success" | "500";
 
-type DevToolProps = {
-  getShoesResponse: GetShoesResponse;
-  setGetShoesResponse: (resp: GetShoesResponse) => void;
+type DevToolsProps = {
+  config: DevToolsConfig;
+  setConfig: (config: DevToolsConfig) => void;
 };
 
-export default function DevTools({
-  getShoesResponse,
-  setGetShoesResponse,
-}: DevToolProps) {
+export default function DevTools({ config, setConfig }: DevToolsProps) {
   const [isOpen, setIsOpen] = useState(true);
   const { setUser, user } = useUserContext();
 
@@ -39,10 +37,13 @@ export default function DevTools({
           <SelectInput
             id="get-shoes"
             label="Get Shoes Response"
-            onChange={(e) =>
-              setGetShoesResponse(e.target.value as GetShoesResponse)
-            }
-            value={getShoesResponse}
+            onChange={(e) => {
+              setConfig({
+                ...config,
+                getShoesResponse: e.target.value as GetShoesResponse,
+              });
+            }}
+            value={config.getShoesResponse}
             options={[
               { label: "Success", value: "success" },
               { label: "500 Error", value: "500" },
