@@ -1,0 +1,8 @@
+p[role="alert"] {
+  color: red;
+  font-weight: bold;
+}
+
+label {
+  display: block;
+}
