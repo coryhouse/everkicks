@@ -51,7 +51,8 @@ export default function FastForm({ slowComponent }: FastFormProps) {
     });
 
     if (formIsValid) {
-      event.currentTarget.reset();
+      // To reset the form and its child fields could assign a key that changes on submission.
+      // (Native browser reset isn't sufficient since we need to reset the touched state in each FastInput too)
       console.log(`Fast Form Submitted`, fields);
     }
   }
