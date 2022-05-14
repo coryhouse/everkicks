@@ -39,8 +39,12 @@ export default function FastInput({
         id={id}
         type="text"
         name={name}
-        value={value}
         onBlur={() => setTouched(true)}
+        // NOTE that this input is UNCONTROLLED because it DOES NOT specify a value.
+        // There's no need for React to control the value since we're reading
+        // form values via the onChange. (Uncontrolled is also faster)
+        // Need to keep value though so we can update the validation message
+        // on each keystroke.
         onChange={(e) => setValue(e.target.value)}
       />
       {error && (touched || formStatus === "Submitted") && (
