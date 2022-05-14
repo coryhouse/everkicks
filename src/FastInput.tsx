@@ -29,7 +29,6 @@ export default function FastInput({
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
 
-  // Derived state
   // Note: This is efficient because it only runs when the user interacts with this field.
   const error = validate(name, value);
 
