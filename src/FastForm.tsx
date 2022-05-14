@@ -18,6 +18,7 @@ type FastFormProps = {
 export default function FastForm({ slowComponent }: FastFormProps) {
   const [formStatus, setFormStatus] = useState<FormStatus>("Idle");
   const [submitCount, setSubmitCount] = useState(0);
+  const [completionCount, setCompletionCount] = useState(0);
 
   function validateRequired(value: string) {
     return value ? "" : "Required field.";
@@ -51,9 +52,14 @@ export default function FastForm({ slowComponent }: FastFormProps) {
     });
 
     if (formIsValid) {
-      // To reset the form and its child fields could assign a key that changes on submission.
-      // (Native browser reset isn't sufficient since we need to reset the touched state in each FastInput too)
       console.log(`Fast Form Submitted`, fields);
+      // To reset the form and its child fields
+      // 1. Reset form Status
+      // 2. Change a formSubmitCount counter that is used to assign a key to each input. This way each input is garbage collected and thus reset.
+      // (Native browser reset isn't sufficient since we need to reset each FastInput's state)
+      // Alternatively, a parent wrapper component would change the FastForm component's key on submission.
+      setFormStatus("Idle");
+      setCompletionCount((curValue) => curValue + 1);
     }
   }
 
@@ -63,6 +69,7 @@ export default function FastForm({ slowComponent }: FastFormProps) {
       {slowComponent}
 
       <FastInput
+        key={"firstName" + completionCount}
         id="firstName"
         label="First Name"
         validate={validate}
@@ -71,6 +78,7 @@ export default function FastForm({ slowComponent }: FastFormProps) {
       />
 
       <FastInput
+        key={"email" + completionCount}
         id="email"
         label="Email"
         validate={validate}
