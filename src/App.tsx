@@ -1,7 +1,7 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useQuery } from "react-query";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { getShoes } from "./api/shoeApi";
 import ErrorFallback from "./ErrorFallback";
 import ExpensiveTree from "./ExpensiveTree";
@@ -20,7 +20,7 @@ export default function App() {
   if (!shoes) return <Spinner />;
 
   return (
-    <BrowserRouter>
+    <>
       <header>
         <nav>
           <ul>
@@ -75,6 +75,6 @@ export default function App() {
           </Suspense>
         )}
       </main>
-    </BrowserRouter>
+    </>
   );
 }

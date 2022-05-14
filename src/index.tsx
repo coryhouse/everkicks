@@ -9,6 +9,7 @@ import App from "./App";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "./ErrorFallback";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,15 +19,17 @@ const queryClient = new QueryClient();
 
 root.render(
   <ErrorBoundary FallbackComponent={ErrorFallback}>
-    <QueryClientProvider client={queryClient}>
-      <UserContextProvider>
-        <ToastContainer />
-        {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" ? (
-          <AppDevTools />
-        ) : (
-          <App />
-        )}
-      </UserContextProvider>
-    </QueryClientProvider>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <UserContextProvider>
+          <ToastContainer />
+          {process.env.REACT_APP_SHOW_DEV_TOOLS === "Y" ? (
+            <AppDevTools />
+          ) : (
+            <App />
+          )}
+        </UserContextProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
   </ErrorBoundary>
 );
