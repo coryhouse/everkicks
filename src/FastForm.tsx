@@ -54,10 +54,10 @@ export default function FastForm({ slowComponent }: FastFormProps) {
 
     if (formIsValid) {
       console.log(`Fast Form Submitted`, fields);
+      setFormStatus("Idle");
       /**
-       * To reset the form and its child fields
-       * 1. Reset formStatus
-       * 2. Set completionCount (used to assign a key to each input below). Changing the key tells React to garbage collect, and thus reset.
+       * To reset the fields, set completionCount (used to assign a key to each input below).
+       * Changing the key tells React to garbage collect, and thus reset.
        * (Native browser reset via `event.currentTarget.reset()` isn't sufficient since we need to reset each FastInput's internal state)
        * Alternatives to this form reset approach:
        * 1. Could change the FastForm component's key on submission via a parent component that is notified of submission via a callback.
@@ -65,7 +65,6 @@ export default function FastForm({ slowComponent }: FastFormProps) {
        * 3. Could redirect to a confirmation page, then allow the user to click a link to be directed back to a new, empty form (the previous form would have been garbage collected when the user nagivated away, and thus, reset).
        * The current approach provides granular control, since merely the form fields can be reset without removing any
        */
-      setFormStatus("Idle");
       setCompletionCount((curValue) => curValue + 1);
     }
   }
