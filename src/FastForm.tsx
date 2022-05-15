@@ -18,6 +18,7 @@ type FastFormProps = {
 export default function FastForm({ slowComponent }: FastFormProps) {
   const [formStatus, setFormStatus] = useState<FormStatus>("Idle");
   const [submitCount, setSubmitCount] = useState(0);
+  // Incremented each time the form is successfully completed. Used to reset the form by changing the field's keys.
   const [completionCount, setCompletionCount] = useState(0);
 
   function validateRequired(value: string) {
