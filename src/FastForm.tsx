@@ -48,6 +48,11 @@ export default function FastForm({ slowComponent }: FastFormProps) {
     const formData = new FormData(event.currentTarget);
     const fields = Object.fromEntries(formData.entries());
 
+    /**
+     * Since each field performs its own validation:
+     * 1. Iterate over all submitted fields
+     * 2. Call the validate function for each (the same func used by each field)
+     **/
     const formIsValid = Object.entries(fields).every(([fieldName, value]) => {
       return !validate(fieldName as FieldName, value.toString());
     });
