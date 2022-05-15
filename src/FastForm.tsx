@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FastInput from "./FastInput";
 
-export type FormStatus = "Idle" | "Submitted";
+export type FormStatus = "Idle" | "Submitted" | "Completed";
 export type FieldName = "firstName" | "email";
 export type ValidateFunction = (name: FieldName, value: string) => string;
 
@@ -17,16 +17,13 @@ type FastFormProps = {
  */
 export default function FastForm({ slowComponent }: FastFormProps) {
   const [formStatus, setFormStatus] = useState<FormStatus>("Idle");
-  const [submitCount, setSubmitCount] = useState(0);
-  // Incremented each time the form is successfully completed. Used to reset the form by changing the field's keys.
-  const [completionCount, setCompletionCount] = useState(0);
 
   function validateRequired(value: string) {
     return value ? "" : "Required field.";
   }
 
   function validateEmail(value: string) {
-    return value.includes("@") ? "" : "Invalid email.";
+    return value.includes("@") ? "" : "Email must have an @.";
   }
 
   // Validate the provided field/value combination
@@ -42,7 +39,6 @@ export default function FastForm({ slowComponent }: FastFormProps) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormStatus("Submitted");
-    setSubmitCount((curValue) => curValue + 1);
 
     // Since the fields all manage their own state, read form data from form's event
     const formData = new FormData(event.currentTarget);
@@ -59,28 +55,30 @@ export default function FastForm({ slowComponent }: FastFormProps) {
 
     if (formIsValid) {
       console.log(`Fast Form Submitted`, fields);
-      setFormStatus("Idle");
+      setFormStatus("Completed");
       /**
-       * To reset the fields, set completionCount (used to assign a key to each input below).
-       * Changing the key tells React to garbage collect, and thus reset.
+       * The current approach stops rendering the form upon successful submission.
+       * This resets the fields.
+       * If you want to keep displaying the fields after submission, but support a reset:
        * (Native browser reset via `event.currentTarget.reset()` isn't sufficient since we need to reset each FastInput's internal state)
        * Alternatives to this form reset approach:
        * 1. Could change the FastForm component's key on submission via a parent component that is notified of submission via a callback.
        * 2. Could extract all the JSX below to a separate component so it could be assigned a key.
        * 3. Could redirect to a confirmation page, then allow the user to click a link to be directed back to a new, empty form (the previous form would have been garbage collected when the user nagivated away, and thus, reset).
-       * The current approach provides granular control, since merely the form fields can be reset without removing any
+       * 4. Add `formSubmitCount` to FastForm's state, increment it upon successful completion, and use that value to set a key on each field. Changing the key tells React to garbage collect, and thus reset.
        */
-      setCompletionCount((curValue) => curValue + 1);
     }
   }
 
-  return (
+  return formStatus === "Completed" ? (
+    <p>
+      Thanks! The submitted values were written to the console.{" "}
+      <button onClick={() => setFormStatus("Idle")}>Submit another</button>
+    </p>
+  ) : (
     <form onSubmit={handleSubmit}>
-      {submitCount}
       {slowComponent}
-
       <FastInput
-        key={"firstName" + completionCount}
         id="firstName"
         label="First Name"
         validate={validate}
@@ -89,7 +87,6 @@ export default function FastForm({ slowComponent }: FastFormProps) {
       />
 
       <FastInput
-        key={"email" + completionCount}
         id="email"
         label="Email"
         validate={validate}
