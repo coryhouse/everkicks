@@ -71,7 +71,7 @@ export default function FastForm({ slowComponent }: FastFormProps) {
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       {submitCount}
       {slowComponent}
 
