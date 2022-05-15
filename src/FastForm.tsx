@@ -11,9 +11,9 @@ type FastFormProps = {
 
 /**
  * The FastForm component takes the uncontrolled approach. Rather than keeping
- * track of all the values and passing the values to each field, we let the
- * fields keep track of things themselves and we retrieve the values from the
- * form.elements when it's submitted.
+ * track of all the values and passing the values to each field, we:
+ * 1. Let the fields keep track of their own state.
+ * 2. Retrieve the values via the browser's native form.elements upon submission.
  */
 export default function FastForm({ slowComponent }: FastFormProps) {
   const [formStatus, setFormStatus] = useState<FormStatus>("Idle");
